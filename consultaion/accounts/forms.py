@@ -2,7 +2,7 @@ from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
-from .models import Profile,Doctor
+from .models import Profile,Document
 
 class CreateUserForm(UserCreationForm):
 	class Meta:
@@ -23,7 +23,13 @@ class ProfileEditForm(forms.ModelForm):
         model = Profile
         exclude = {'user','is_doctor'}
 
-class DoctorEditForm(forms.ModelForm):
+
+class DocumentForm(forms.ModelForm):
     class Meta:
-        model = Doctor
-        exclude = {'doc_name'}
+        model = Document
+        fields = ('description', 'document' )
+
+# class DoctorEditForm(forms.ModelForm):
+#     class Meta:
+#         model = Doctor
+#         exclude = {'doc_name'}

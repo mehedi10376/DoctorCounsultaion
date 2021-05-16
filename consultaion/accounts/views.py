@@ -2,14 +2,14 @@ from math import ceil
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
-from .forms import  CreateUserForm,UserEditForm,ProfileEditForm,DoctorEditForm
-
+from .forms import  CreateUserForm,UserEditForm,ProfileEditForm,DocumentForm
+from django.db import IntegrityError
 from django.http import HttpResponse
 from django.contrib.auth.models import User, auth
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.shortcuts import render, redirect
-
+from hospitals.models import TakeAppointment
 from .models import *
 
 def home (request):
@@ -64,7 +64,8 @@ def about(request):
 def profile(request,pk):
 	
 	u=User.objects.filter(username=pk).first()
-	context={'u':u}
+	appointment = TakeAppointment.objects.filter(user = u )
+	context={'u':u, 'appointment' : appointment}
 
 	return render(request, 'accounts/profile.html',context)
 
@@ -87,24 +88,41 @@ def profile_edit(request):
     }
     return render(request, 'accounts/profile_edit.html', context)
 
-def doctor_edit (request):
-	# doctor_ins = Doctor.objects.get(doc_name=request.user)
+# def doctor_edit (request):
+# 	# doctor_ins = Doctor.objects.get(doc_name=request.user)
+# 	if request.method == 'POST':
+
+# 		doc_form = DoctorEditForm(data=request.POST or None)
+# 		if doc_form.is_valid():
+# 			form = doc_form.save(commit = False)
+# 			form.doc_name = request.user
+# 			form.save()
+			
+			
+# 			return redirect("/")
+# 	else:
+# 		doc_form = DoctorEditForm (instance = request.user)
+	
+# 	context = {
+# 		'doc_form' : doc_form
+# 	}
+# 	return render(request, 'accounts/doctor_edit.html', context)
+
+def model_form_upload(request):
 	if request.method == 'POST':
-
-		doc_form = DoctorEditForm(data=request.POST or None)
-		if doc_form.is_valid():
-			form = doc_form.save(commit = False)
-			form.doc_name = request.user
-			form.save()
-			
-			
-			return redirect("/")
+		form = DocumentForm(request.POST, request.FILES)
+		if form.is_valid():
+			form = form.save(commit = False)
+			form.user = request.user
+			try:
+				form.save()
+			except IntegrityError:
+				pass
+			return redirect('home')
 	else:
-		doc_form = DoctorEditForm (instance = request.user)
-	
-	context = {
-		'doc_form' : doc_form
-	}
-	return render(request, 'accounts/doctor_edit.html', context)
+		form = DocumentForm()
+	return render(request, 'accounts/testreport.html', {
+		'form': form
+		})	
 
-	
+

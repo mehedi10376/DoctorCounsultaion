@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 
 
 
@@ -10,32 +13,31 @@ class Profile(models.Model):
     user_age = models.IntegerField(null=True)
     user_phone = models.CharField(max_length=200, null=True)
     user_address = models.CharField(max_length=200, null=True)
-    user_email = models.CharField(max_length=200, null=True)
     user_img = models.ImageField(upload_to='profile_pics', default='default.jpg')
-    is_doctor = models.BooleanField(default = False)
+  
 
     def __str__(self):
         return self.user.username
 
-class Department(models.Model):
-    dept_name = models.CharField(max_length=200, null=True)
 
-    def __str__(self):
-        return self.dept_name
-
-class Doctor(models.Model):
-    doc_name =models.OneToOneField(User, on_delete=models.CASCADE)
-    doc_department = models.ForeignKey(Department, null=True, on_delete= models.SET_NULL)
-    starting_time = models.CharField(max_length=200, null=True)
-    ending_time = models.CharField(max_length=200, null=True)
-    sat_day= models.BooleanField(default = False)
-    sun_day= models.BooleanField(default = False)
-    mon_day= models.BooleanField(default = False)
-    tues_day= models.BooleanField(default = False)
-    wed_day= models.BooleanField(default = False)
-    thurs_day= models.BooleanField(default = False)
-    fri_day= models.BooleanField(default = False)
+@receiver(post_save, sender=User)
+def _post_save_receiver(sender,created,instance, **kwargs):
+    if created:
+        Profile.objects.create(user = instance)
+    instance.profile.save()
     
 
-def __str__(self):
-    return self.doc_name.username
+
+
+
+class Document(models.Model):
+    user =  models.OneToOneField(User, on_delete=models.CASCADE)
+    description = models.CharField(max_length=255, blank=True)
+    document = models.FileField(upload_to='documents/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+# class Department(models.Model):
+#     dept_name = models.CharField(max_length=200, null=True)
+
+#     def __str__(self):
+#         return self.dept_name
+
