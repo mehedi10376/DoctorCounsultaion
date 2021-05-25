@@ -1,0 +1,16 @@
+  {% extends 'accounts/base.html' %} 
+   {% load static %}
+   {% block content %}
+
+
+<div class="jumbotron d-flex align-items-center">
+        <div class="container">
+            <h2>Thank you for your feedback, our response team will get back to you soon!</h2>
+            <a href= {% url 'home' %} class="text-decoration-none" >
+            <div class="row justify-content-center align-self-center">
+                    Go Home
+            </div></a>
+        </div>
+</div>
+{% endblock content %}
+
