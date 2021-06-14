@@ -71,7 +71,11 @@ def visiting(request,pk):
 	user_name = user.username
 	doctor_name = doc.name
 	user_email = user.email
-	content = "hi " + user_name + ",\n Your appointment with dr." + doctor_name + "is going to start soon. if you have any reports, then please insert it to your profile. your visiting will start soon. Please stay in that meet link.\nRegards,\nChiropratic community."
+	
+	meetlink = MeetLink.objects.filter(doc_name = doc).last()
+
+	link = meetlink.link
+	content = "hi " + user_name + ",\n Your appointment with dr." + doctor_name + "is going to start soon. if you have any reports, then please insert it to your profile. your visiting will start soon. Please stay in that meet link.\n"+link+" \nRegards,\Medico Consultation."
 	
 
 	send_mail(
@@ -115,6 +119,21 @@ def appointment(request,pk):
 	else:
 		form = forms.SetAppointment()
 	return render(request, 'hospitals/appointment.html',{"form": form})
+
+
+def meetlink(request):
+	doc = Doctor.objects.get(user = request.user)
+	if request.method == "POST":
+		form = forms.SetMeetlink(request.POST, request.FILES)
+		if form.is_valid():
+			instance = form.save(commit=False)
+			instance.doc_name = doc
+			instance.save()
+			messages.info(request, 'successfully appointed')
+			return redirect('home')
+	else:
+		form = forms.SetMeetlink()
+	return render(request, 'hospitals/meetlink.html',{"form": form})
 
 
 def sendanemail(request):

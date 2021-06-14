@@ -22,4 +22,4 @@ class SetAppointment (forms.ModelForm):
 class SetMeetlink (forms.ModelForm):
     class Meta:
         model = MeetLink
-        exclude = {'doctor'}
+        exclude = {'doc_name'}

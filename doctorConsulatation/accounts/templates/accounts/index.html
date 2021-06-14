@@ -11,7 +11,7 @@
 	          <div class="row no-gutters slider-text align-items-center justify-content-end">
 		          <div class="col-md-6 ftco-animate">
 		          	<div class="text w-100">
-			            <h1 class="mb-4">Welcome to our Medico Consultation center</h1>
+			            <h1 class="mb-4">Welcome to our medico consultation centre</h1>
 			            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
 			           
 						<p><a href="{% url 'doctorview' %}" class="btn btn-primary">Book an appointment</a></p>
@@ -28,7 +28,7 @@
 	          <div class="row no-gutters slider-text align-items-center justify-content-end">
 		          <div class="col-md-6 ftco-animate">
 		          	<div class="text w-100">
-			            <h1 class="mb-4">Medico Consultation care for the whole family</h1>
+			            <h1 class="mb-4">medico consultation care for the whole family</h1>
 			            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
 						
 						<p><a href="{% url 'doctorview' %}" class="btn btn-primary">Book an appointment</a></p>
@@ -51,21 +51,21 @@
                     <div class="bg-primary p-5 heading-section heading-section-white">
                         <span class="subheading">Contact Us</span>
                         <h2 class="mb-4">Feel free to ask any questions</h2>
-                        <form action="/contact_us/" class="appointment" method = "GET">
+                        <form action="/" class="appointment" method = "GET">
                             <div class="row justify-content-center">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                              <input type="text" class="form-control" placeholder="Your Name" id="ur_name" >
+                              <input type="text" class="form-control" placeholder="Your Name" id="ur_name" name="ur_name" >
                             </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                              <input type="text" class="form-control" placeholder="Your Email" id="email">
+                              <input type="text" class="form-control" placeholder="Your Email" id="email" name="email">
                             </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                              <input type="text" class="form-control" placeholder="Your Query" id="comment">
+                              <input type="text" class="form-control" placeholder="Your Query" id="comment" name="comment">
                             </div>
                                     </div> 
                                     

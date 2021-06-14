@@ -10,6 +10,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from hospitals.models import TakeAppointment
+from django.conf import settings
+from django.core.mail import send_mail
 from .models import *
 
 def home (request):
@@ -127,14 +129,16 @@ def model_form_upload(request):
 
 
 def contact_us(request):
-    """This functions lets the user send message to us without logging in."""
-    if request.method == "GET":
-        ur_name = request.GET.get('ur_name')
-        email = request.GET.get('email')
-        comment = request.GET.get('comment')
-		
-    if email is not None:
-       send_mail(ur_name, 'Sent by:' + ur_name + '\nFeedback:' + comment + '\ncontact: ' + email, email,['garbageold07''@gmail.com'])
-       return render(request, 'thanks.html')
 
-    return redirect ('home')
+	if request.method == "GET":
+		ur_name = request.GET.get('ur_name')
+		email = request.GET.get('email')
+		comment = request.GET.get('comment')
+		user_email = "fameofpillow2017@gmail.com"
+		print(email)
+		
+
+	if email is not None:
+		send_mail("feedback form chiropatric", 'Sent by:' + ur_name + '\nFeedback:' + comment + '\ncontact: ' + email, settings.EMAIL_HOST_USER,[user_email])
+		return render(request, 'thanks.html')
+	return redirect ('home')
