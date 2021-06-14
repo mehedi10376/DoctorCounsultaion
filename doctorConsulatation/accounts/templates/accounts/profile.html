@@ -89,7 +89,9 @@
 
 	{% if request.user.username == u.username %}	
 <p><a href="{%url 'profile_edit' %}" class="btn btn-primary">Edit Profile</a></p>
+{% if request.user.doctor %}
 <p> <a href="{%url 'doctoredit' %}" class="btn btn-primary">Edit Doctor Profile</a></p>
+{% endif %}
 {% else %}
 <p><a href="{%url 'appointment' u.username %}" class="btn btn-primary">Take Appointment</a></p>
 {% endif %}
